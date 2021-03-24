@@ -1,5 +1,10 @@
 import socket
 
+#initial values
+velocity = 110.0
+time = 0.2
+position = '14 S 368058 3899192'
+
 IPaddr = input('Enter IP Address: ') #use 192.168.1.173 to test
 port = 20001
 bufferSize = 1024
