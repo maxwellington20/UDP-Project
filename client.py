@@ -1,29 +1,25 @@
 import socket
-import struct
+#import struct
 
-counter = 1000 #for sequence number
+#initial values
+seq_num = 5895
+addr = "192.168.1.173"
+port_num = 6789
+pos = "14 S 368052 3899189"
+vel = 110.99
+accel = 1.38
+brk_ctrl = 0.0
+throttle = 0.46
 
-def string_conversion(velocity, time, pos, client_addr, seq_num):
-    response = "*****Leading Truck Stats*****"
-    response += "\nSequence #: %d" %(seq_num)
-    response += "\nVelocity: %.1f" %(velocity)
-    response += "\nTime: %.1f" %(time)
-    response += "\nPosition: %s" %(pos)
-    response += "\nAddress: %s" %(client_addr)
-    return str.encode(response)
+#prepare packet data
+s = str(seq_num) + "," + str(addr) + "," + str(pos) + "," + str(vel)
+s += "," + str(accel) + "," + str(brk_ctrl) + "," + str(throttle)
 
-bytesToSend = string_conversion(110.0, 0.2, "14 S 368056 3899192", "192.168.1.173", counter)
+#print(s)
+data = str.encode(s)
 
-serverAddressPort = ("192.168.1.173", 20001)
-bufferSize = 1024
+clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-#Create a UDP socket at client side
-UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-
-# Send to server using created UDP socket
-UDPClientSocket.sendto(bytesToSend, serverAddressPort)
-
-msgFromServer = UDPClientSocket.recvfrom(bufferSize)
-msg = "Message from Server: {}".format(msgFromServer[0])
-
-print(msg)
+#send packet
+clientSock.sendto(data, (addr, port_num))
+print("Packet Sent:")

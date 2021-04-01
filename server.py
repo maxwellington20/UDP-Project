@@ -1,36 +1,18 @@
 import socket
+#import struct
 
-#initial values
-velocity = 110.0
-time = 0.2
-position = '14 S 368058 3899192'
+serv_addr = "192.168.1.173"
+serv_port = 6789
 
-IPaddr = input('Enter IP Address: ') #use 192.168.1.173 to test
-port = 20001
-bufferSize = 1024
+servSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-msgFromServer = "Hello UDP Client"
-bytesToSend = str.encode(msgFromServer)
+servSock.bind((serv_addr, serv_port))
 
-# Create a datagram socket
-UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+while True:
+    print("Server Listening...")
 
-# Bind to address and ip
-UDPServerSocket.bind((IPaddr, port))
-print("Server listening")
+    data, addr = servSock.recvfrom(1024)
 
-# Listen for incoming datagrams
-while(True):
+    s = bytes.decode(data)
 
-    bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
-    message = bytesAddressPair[0]
-    address = bytesAddressPair[1]
-
-    clientMsg = "Message from Client:{}".format(message)
-    clientIP  = "Client IP Address:{}".format(address)
-    
-    print(clientMsg)
-    print(clientIP)
-
-    # Sending a reply to client
-    UDPServerSocket.sendto(bytesToSend, address)
+    print(s)
