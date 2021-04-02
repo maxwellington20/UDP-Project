@@ -1,7 +1,13 @@
+# Program to simulate leading truck
+# by Maxwell Ern, 4/2/21
+# The following program will send two packets to the server
+# and receive two respective acks for them. It will then signal
+# the server that it is disconnecting and quit execution. 
+
 import socket
 import time
 
-#initial values
+#initial client values, mostly taken from provided project files
 seq_num = 5895
 addr = "192.168.1.173"
 port_num = 6789
@@ -28,7 +34,7 @@ def createPacket():
 def printPacketSent():
     print("Packet Sent:")
 
-    if(seq_num == 99999):
+    if(seq_num == 99999): # signals that client will disconnect from server
         print("Type = Socket Disconnection")
         print("Sequence No. = 99999\n")
         clientSock.close()
@@ -67,10 +73,13 @@ def sendAndReceive(serv_addr): #made this to streamline the testing proccess
 sendAndReceive(addr) #execute with original info
 
 
+# i am an undergrad and only doing the following tests to see if I can, so I
+# won't create ten different data exchanges like the grad requirement
+
 # in order to follow the scripts provided in the project1 folder on canvas,
 # I manually code changes in data here rather than in the terminal
 
-#change one
+#new packet data
 seq_num += 1 
 pos = "14 S 368048 3899185"
 vel = 112.88
