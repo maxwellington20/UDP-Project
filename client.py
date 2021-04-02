@@ -1,5 +1,5 @@
 import socket
-#import struct
+import time
 
 #initial values
 seq_num = 5895
@@ -7,7 +7,7 @@ addr = "192.168.1.173"
 port_num = 6789
 pos = "14 S 368052 3899189"
 vel = 110.0
-time = 0.2
+t_sec = 0.2
 accel = 1.38
 brk_ctrl = 0.0
 throttle = 0.46
@@ -15,7 +15,7 @@ throttle = 0.46
 #print initial values
 print("Initial GPS Position: %s" %(pos))
 print("Initial Velocity: %.1fkm/h" %(vel))
-print("Time Interval: %.1fs" %(time))
+print("Time Interval: %.1fs" %(t_sec))
 print("============================================")
 
 #prepare client_pack data
@@ -33,12 +33,26 @@ def printPacketSent():
     print("Velocity = %.2f" %(vel))
     print("Acceleration = %.2f" %(accel))
     print("Brake Control = %.1f" %(brk_ctrl))
-    print("Gas Throttle = %.2f" %(throttle))
+    print("Gas Throttle = %.2f\n" %(throttle))
+
+#print ack info
+def printPacketRecv(num):
+    print("Packet Received:")
+    print("Type = Ack")
+    print("Sequence No. = %s\n" %(num))
 
 #connect to server
 clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-#send client_pack
+#send client packet
 data = createPacket()
 clientSock.sendto(data, (addr, port_num))
 printPacketSent()
+
+while True:
+    data, addr = clientSock.recvfrom(1024) #recieve server packet
+    serv_pack = bytes.decode(data)
+    printPacketRecv(serv_pack)
+
+    time.sleep(.2) #wait a bit before looking to recieve
+

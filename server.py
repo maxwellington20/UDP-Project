@@ -1,17 +1,17 @@
 import socket
-#import struct
+import time
 
 #initial server values
 addr = "192.168.1.173"
 port = 6789
 pos = "14 S 368058 3899192"
 vel = 110.0
-time = 0.2
+t_sec = 0.2
 
 #print initial values
 print("Initial GPS Position: %s" %(pos))
 print("Initial Velocity: %.1fkm/h" %(vel))
-print("Time Interval: %.1fs" %(time))
+print("Time Interval: %.1fs" %(t_sec))
 print("============================================")
 
 #create socket
@@ -105,14 +105,28 @@ def printPacketSent(num):
     print("Type = Ack")
     print("Sequence No. = %s\n" %(num))
 
+def createAck(n):
+    ack = str(n)
+    return str.encode(ack) #convert list of variables to bytes
 
+#while loop to operate under
 while True:
     #receive packet from client
     data, addr = servSock.recvfrom(1024)
     client_pack = bytes.decode(data)
 
+    #print received packet
     ack_num = printPacketStats(client_pack)
-    printPacketSent(ack_num)
+    
+    #create and send ack
+    data = str(ack_num)
+    ack = str.encode(data)
+    
+    #servSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    servSock.sendto(ack, addr)
+    printPacketSent(ack_num) #print the sent ack
+
+    time.sleep(t_sec) #wait a bit before receiving more packets
 
 
 
