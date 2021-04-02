@@ -15,7 +15,7 @@ vel = 110.0
 t_sec = 0.2
 
 #print initial values
-print("Initial GPS Position: %s" %(pos))
+print("\nInitial GPS Position: %s" %(pos))
 print("Initial Velocity: %.1fkm/h" %(vel))
 print("Time Interval: %.1fs" %(t_sec))
 print("============================================")

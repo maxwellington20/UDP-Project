@@ -19,7 +19,7 @@ brk_ctrl = 0.0
 throttle = 0.46
 
 #print initial values
-print("Initial GPS Position: %s" %(pos))
+print("\nInitial GPS Position: %s" %(pos))
 print("Initial Velocity: %.1fkm/h" %(vel))
 print("Time Interval: %.1fs" %(t_sec))
 print("============================================")
