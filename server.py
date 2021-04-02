@@ -25,6 +25,11 @@ def getVarString(x):
     s1 = ""
     return(s1.join(x))
 
+def socketClosed(num):
+    print("Type = Socket Disconnection")
+    print("Sequence No. = %s\n" %(num))
+    quit()
+
 #extract values from packet and print results
 def printPacketStats(s):
     print("Packet Received:")
@@ -42,6 +47,11 @@ def printPacketStats(s):
         i = i + 1
     seq_num = getVarString(temp)
     i = i + 1
+
+    if(seq_num == "99999"): # my program uses sequence number to signal when
+        servSock.close()    # the client wishes to disconnect
+        socketClosed(seq_num)
+    
     print("Sequence No. = %s" %(seq_num))
 
     #second is client ip address

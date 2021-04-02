@@ -27,6 +27,13 @@ def createPacket():
 #print packet info
 def printPacketSent():
     print("Packet Sent:")
+
+    if(seq_num == 99999):
+        print("Type = Socket Disconnection")
+        print("Sequence No. = 99999\n")
+        clientSock.close()
+        quit()
+
     print("Sequence No. = %d" %(seq_num))
     print("IP = %s" %(addr))
     print("GPS Position = %s" %(pos))
@@ -64,10 +71,14 @@ sendAndReceive(addr) #execute with original info
 # I manually code changes in data here rather than in the terminal
 
 #change one
-seq_num += 1
+seq_num += 1 
 pos = "14 S 368048 3899185"
 vel = 112.88
 accel = 2.63
 throttle = 0.46
 sendAndReceive(addr) #execute with new changes
+
+#final change
+seq_num = 99999 #program uses this sequence number to tell server it is disconnecting
+sendAndReceive(addr)
 
