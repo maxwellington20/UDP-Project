@@ -44,15 +44,30 @@ def printPacketRecv(num):
 #connect to server
 clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-#send client packet
-data = createPacket()
-clientSock.sendto(data, (addr, port_num))
-printPacketSent()
+def sendAndReceive(serv_addr): #made this to streamline the testing proccess
+    #send client packet
+    data = createPacket()
+    clientSock.sendto(data, (serv_addr, port_num))
+    printPacketSent()
 
-while True:
-    data, addr = clientSock.recvfrom(1024) #recieve server packet
-    serv_pack = bytes.decode(data)
-    printPacketRecv(serv_pack)
+    while True:
+        time.sleep(t_sec) #wait a bit before looking to recieve
+        data, serv_addr = clientSock.recvfrom(1024) #recieve server packet
+        serv_pack = bytes.decode(data)
+        printPacketRecv(serv_pack)
+        break
 
-    time.sleep(.2) #wait a bit before looking to recieve
+sendAndReceive(addr) #execute with original info
+
+
+# in order to follow the scripts provided in the project1 folder on canvas,
+# I manually code changes in data here rather than in the terminal
+
+#change one
+seq_num += 1
+pos = "14 S 368048 3899185"
+vel = 112.88
+accel = 2.63
+throttle = 0.46
+sendAndReceive(addr) #execute with new changes
 
