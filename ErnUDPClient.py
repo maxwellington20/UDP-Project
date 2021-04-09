@@ -9,7 +9,6 @@ import time
 
 #initial client values, mostly taken from provided project files
 seq_num = 5895
-addr = "192.168.1.173"
 port_num = 6789
 pos = "14 S 368052 3899189"
 vel = 110.0
@@ -18,11 +17,10 @@ accel = 1.38
 brk_ctrl = 0.0
 throttle = 0.46
 
-#print initial values
-print("\nInitial GPS Position: %s" %(pos))
-print("Initial Velocity: %.1fkm/h" %(vel))
-print("Time Interval: %.1fs" %(t_sec))
-print("============================================")
+
+#####################
+# Definitions Below #
+#####################
 
 #prepare client_pack data
 def createPacket():
@@ -54,8 +52,26 @@ def printPacketRecv(num):
     print("Type = Ack")
     print("Sequence No. = %s\n" %(num))
 
+
+##################
+# The Rest Of It #
+##################
+
 #connect to server
 clientSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+#get ip address
+addr=socket.gethostbyname(socket.gethostname())
+if addr=="127.0.0.1":
+    print("No internet, your localhost is "+ addr)
+else:
+    print("Connected, with the IP address: "+ addr)
+
+#print initial values
+print("\nInitial GPS Position: %s" %(pos))
+print("Initial Velocity: %.1fkm/h" %(vel))
+print("Time Interval: %.1fs" %(t_sec))
+print("============================================")
 
 def sendAndReceive(serv_addr): #made this to streamline the testing proccess
     #send client packet

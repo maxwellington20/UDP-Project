@@ -8,23 +8,33 @@ import socket
 import time
 
 #initial server values, mostly taken from provided project files
-addr = "192.168.1.173"
 port = 6789
 pos = "14 S 368058 3899192"
 vel = 110.0
 t_sec = 0.2
 
-#print initial values
-print("\nInitial GPS Position: %s" %(pos))
-print("Initial Velocity: %.1fkm/h" %(vel))
-print("Time Interval: %.1fs" %(t_sec))
-print("============================================")
+
+####################################
+# Establishing Server Socket (UDP) #
+####################################
 
 #create socket
 servSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-#connect to client
+#get ip address
+addr=socket.gethostbyname(socket.gethostname())
+if addr=="127.0.0.1":
+    print("No internet, your localhost is "+ addr)
+else:
+    print("Connected, with the IP address: "+ addr)
+
+#bind to ip addr and port number
 servSock.bind((addr, port))
+
+
+#####################
+# Definitions Below #
+#####################
 
 #takes variable list and conjoins into a string
 def getVarString(x):
@@ -125,6 +135,15 @@ def printPacketSent(num):
     print("Sequence No. = %s\n" %(num))
 
 
+##################
+# The Rest Of It #
+##################
+
+#print initial values
+print("\nInitial GPS Position: %s" %(pos))
+print("Initial Velocity: %.1fkm/h" %(vel))
+print("Time Interval: %.1fs" %(t_sec))
+print("============================================")
 
 #main while loop to operate under
 while True:
